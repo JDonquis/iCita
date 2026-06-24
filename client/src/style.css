@@ -1,6 +1,123 @@
 @import "tailwindcss";
 
+/* ── Google Fonts: Manrope ─────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap');
+
+/* ── Material Symbols Outlined ─────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TAILWIND v4: tokens de diseño definidos con @theme
+   (reemplaza al tailwind.config.js de v3)
+   ═══════════════════════════════════════════════════════════════════════════ */
+@theme {
+  /* ── Colores del sistema (Material You / Stitch) ─────────────────────── */
+  --color-primary:                  #005e96;
+  --color-on-primary:               #ffffff;
+  --color-primary-container:        #0277bd;
+  --color-on-primary-container:     #f7f9ff;
+  --color-primary-fixed:            #cfe5ff;
+  --color-primary-fixed-dim:        #99cbff;
+  --color-on-primary-fixed:         #001d34;
+  --color-on-primary-fixed-variant: #004a78;
+  --color-inverse-primary:          #99cbff;
+
+  --color-secondary:                  #006688;
+  --color-on-secondary:               #ffffff;
+  --color-secondary-container:        #58cafe;
+  --color-on-secondary-container:     #005370;
+  --color-secondary-fixed:            #c2e8ff;
+  --color-secondary-fixed-dim:        #75d1ff;
+  --color-on-secondary-fixed:         #001e2b;
+  --color-on-secondary-fixed-variant: #004d67;
+
+  --color-tertiary:                   #ac2226;
+  --color-on-tertiary:                #ffffff;
+  --color-tertiary-container:         #cf3c3c;
+  --color-on-tertiary-container:      #fff7f6;
+  --color-tertiary-fixed:             #ffdad7;
+  --color-tertiary-fixed-dim:         #ffb3ae;
+  --color-on-tertiary-fixed:          #410004;
+  --color-on-tertiary-fixed-variant:  #910816;
+
+  --color-error:           #ba1a1a;
+  --color-on-error:        #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+
+  --color-background:    #f7f9fb;
+  --color-on-background: #191c1e;
+
+  --color-surface:                  #f7f9fb;
+  --color-on-surface:               #191c1e;
+  --color-surface-dim:              #d8dadc;
+  --color-surface-bright:           #f7f9fb;
+  --color-surface-variant:          #e0e3e5;
+  --color-on-surface-variant:       #404751;
+  --color-surface-tint:             #00629e;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low:    #f2f4f6;
+  --color-surface-container:        #eceef0;
+  --color-surface-container-high:   #e6e8ea;
+  --color-surface-container-highest:#e0e3e5;
+  --color-inverse-surface:          #2d3133;
+  --color-inverse-on-surface:       #eff1f3;
+
+  --color-outline:         #707882;
+  --color-outline-variant: #c0c7d2;
+
+  /* ── Tipografía: Manrope ─────────────────────────────────────────────── */
+  --font-headline-lg:        "Manrope", sans-serif;
+  --font-headline-lg-mobile: "Manrope", sans-serif;
+  --font-headline-md:        "Manrope", sans-serif;
+  --font-body-lg:            "Manrope", sans-serif;
+  --font-body-sm:            "Manrope", sans-serif;
+  --font-button:             "Manrope", sans-serif;
+  --font-label-caps:         "Manrope", sans-serif;
+
+  /* ── Tamaños de fuente ───────────────────────────────────────────────── */
+  --text-headline-lg:        30px;
+  --text-headline-lg-mobile: 24px;
+  --text-headline-md:        20px;
+  --text-body-lg:            16px;
+  --text-body-sm:            14px;
+  --text-button:             16px;
+  --text-label-caps:         12px;
+
+  /* ── Espaciados personalizados (prefijo ic- para evitar colisión con Tailwind) ── */
+  --spacing-ic-xs:            4px;
+  --spacing-ic-sm:            8px;
+  --spacing-ic-md:            16px;
+  --spacing-ic-lg:            24px;
+  --spacing-ic-xl:            32px;
+  --spacing-ic-gutter:        12px;
+  --spacing-ic-margin:        20px;
+
+  /* ── Radios de borde ─────────────────────────────────────────────────── */
+  --radius-DEFAULT: 0.25rem;
+  --radius-lg:      0.5rem;
+  --radius-xl:      0.75rem;
+  --radius-full:    9999px;
+}
+
+/* ── Reset global ──────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
 
 body {
-  @apply bg-slate-50 text-slate-900;
+  font-family: 'Manrope', sans-serif;
+  background-color: #f7f9fb;
+  color: #191c1e;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Material Icons: configuración de variantes ────────────────────────────── */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+  font-family: 'Material Symbols Outlined';
 }
