@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
-
+use App\Mail\ResetPasswordNotification;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 class AuthController extends Controller
 {
     /**
@@ -51,6 +53,29 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Sesión cerrada']);
     }
+
+    public function forgotPassword(Request $request): JsonResponse
+        {
+            $request->validate([
+                'email' => ['required', 'email', 'exists:users,email'],
+            ], [
+                'email.exists' => 'No se encontró ninguna cuenta asociada a este correo electrónico.'
+            ]);
+   
+            $user = User::where('email', $request->email)->first();
+   
+            $token = Password::createToken($user);
+   
+            $frontendUrl = env('FRONTEND_URL', 'http://localhost:5173');
+            $resetUrl = $frontendUrl . '/reset-password?token=' . $token . '&email=' . urlencode($user->email);
+   
+            Mail::to($user->email)->send(new ResetPasswordNotification($resetUrl));
+   
+            return response()->json([
+                'message' => 'Le hemos enviado un enlace para restablecer su contraseña a su bandeja de entrada.'
+            ]);
+        }
+
 
     /**
      * Resetear contraseña del usuario.

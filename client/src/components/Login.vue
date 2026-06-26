@@ -81,9 +81,12 @@ const handleLogin = async () => {
               <label class="font-label-caps text-label-caps text-outline uppercase" for="password-desktop">
                 Contraseña
               </label>
-              <a class="text-label-caps font-label-caps text-secondary hover:text-primary transition-colors" href="#">
-                ¿Olvidó su contraseña?
-              </a>
+              <router-link 
+                  class="text-label-caps font-label-caps text-secondary hover:text-primary transition-colors" 
+                  to="/forgot-password"
+                >
+                  ¿Olvidó su contraseña?
+                </router-link>
             </div>
             <div class="relative group">
               <span class="material-symbols-outlined absolute left-[16px] top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">lock</span>
