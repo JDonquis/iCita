@@ -12,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 
-#[Fillable(['email', 'password', 'role'])]
+#[Fillable(['email', 'password', 'role', 'person_id'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -33,10 +33,10 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the personal details associated with the user.
+     * Get the person associated with the user.
      */
     public function person()
     {
-        return $this->hasOne(Person::class);
+        return $this->belongsTo(Person::class);
     }
 }

@@ -39,10 +39,10 @@ class Person extends Model
     }
 
     /**
-     * Get the user that owns the personal details.
+     * Get the users that belong to this person.
      */
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(User::class);
     }
 }
