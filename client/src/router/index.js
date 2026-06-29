@@ -4,7 +4,6 @@ import PersonnelList from '../components/PersonnelList.vue'
 import Login from '../components/Login.vue'
 import ForgotPassword from '../components/ForgotPassword.vue'
 import ResetPassword from '../components/ResetPassword.vue'
-import Dashboard from '../components/Dashboard.vue'
 import Dashboard from '../Pages/Dashboard.vue'
 
 const router = createRouter({

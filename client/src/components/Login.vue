@@ -25,7 +25,7 @@ const handleLogin = async () => {
 
 <template>
   <!-- Fondo con gradiente clínico -->
-  <div class="bg-gradient-clinical min-h-screen flex flex-col font-body-lg text-on-surface selection:bg-secondary-container overflow-hidden">
+  <div class="bg-gradient-clinical h-screen w-full flex flex-col justify-center font-body-lg text-on-surface selection:bg-secondary-container overflow-hidden relative">
 
     <!-- Elementos decorativos de fondo -->
     <div class="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-secondary/5 rounded-full blur-[100px] pointer-events-none"></div>
@@ -34,7 +34,7 @@ const handleLogin = async () => {
     <!-- ======================== -->
     <!--  VISTA DESKTOP (lg+)     -->
     <!-- ======================== -->
-    <main class="hidden lg:flex flex-grow items-center justify-center px-[20px] py-[32px] relative">
+    <main class="hidden lg:flex items-center justify-center px-[20px] relative z-10 w-full">
       <!-- Tarjeta de login central -->
       <div class="glass-panel w-full max-w-[440px] p-[32px] rounded-lg animate-in fade-in zoom-in duration-700">
 
@@ -69,7 +69,7 @@ const handleLogin = async () => {
                 class="w-full pl-[44px] pr-[16px] py-[16px] bg-surface-container-lowest border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all-custom text-body-lg"
                 placeholder="ejemplo@correo.com"
                 type="email"
-                autocomplete="email"
+                autocomplete=""
                 required
               />
             </div>
@@ -132,29 +132,29 @@ const handleLogin = async () => {
       </div>
     </main>
 
-    <!-- Footer desktop -->
+    <!-- Footer desktop 
     <footer class="hidden lg:flex w-full py-[16px] justify-center items-center bg-surface/30 backdrop-blur-sm">
       <button class="flex items-center gap-[4px] font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors group">
         <span class="material-symbols-outlined text-[18px] group-hover:animate-pulse">support_agent</span>
         Contactar Soporte Técnico
       </button>
-    </footer>
+    </footer>-->
 
 
     <!-- ============================ -->
     <!--  VISTA MÓVIL (hasta lg)      -->
     <!-- ============================ -->
-    <div class="lg:hidden flex flex-col items-center justify-center min-h-screen px-[20px] py-[32px]">
+    <div class="lg:hidden flex flex-col items-center justify-center px-[20px] relative z-10 w-full">
 
       <!-- Cabecera -->
       <div class="w-full max-w-sm flex flex-col items-center mb-[32px] animate-in fade-in slide-in-from-top-4 duration-700">
-        <div class="w-24 h-24 mb-[16px] flex items-center justify-center">
+        <!--<div class="w-24 h-24 mb-[16px] flex items-center justify-center">
           <img
             alt="Logo"
             class="w-full h-full object-contain"
             src=""
           />
-        </div>
+        </div>-->
         <div class="text-center space-y-2">
           <h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">iCita Medical</h1>
           <p class="font-body-sm text-body-sm text-on-surface-variant max-w-[280px]">
@@ -180,7 +180,7 @@ const handleLogin = async () => {
                 class="w-full pl-[48px] pr-[16px] py-[16px] bg-transparent border-none outline-none font-body-lg text-body-lg text-on-surface placeholder:text-outline-variant rounded-md"
                 placeholder="ejemplo@icita.com"
                 type="email"
-                autocomplete="email"
+                autocomplete=""
                 required
               />
             </div>
@@ -234,7 +234,7 @@ const handleLogin = async () => {
         </form>
       </main>
 
-      <!-- Footer móvil -->
+      <!-- Footer móvil 
       <footer class="mt-[32px] w-full max-w-sm flex flex-col items-center gap-[16px] text-center animate-in fade-in duration-1000">
         <p class="font-body-sm text-body-sm text-on-surface-variant">
           ¿Nuevo en iCita?
@@ -245,7 +245,7 @@ const handleLogin = async () => {
           <span class="material-symbols-outlined" style="font-size:16px">support_agent</span>
           Contactar Soporte Técnico
         </a>
-      </footer>
+      </footer>-->
     </div>
 
   </div>
