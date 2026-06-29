@@ -94,6 +94,12 @@ class AuthController extends Controller
                 $user->forceFill([
                     'password' => Hash::make($password),
                 ])->setRememberToken(Str::random(60));
+                
+                // Si el usuario no estaba verificado, marcarlo como verificado al establecer su contraseña
+                if (is_null($user->email_verified_at)) {
+                    $user->email_verified_at = now();
+                }
+                
                 $user->save();
             }
         );

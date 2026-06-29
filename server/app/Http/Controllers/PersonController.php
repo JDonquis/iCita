@@ -18,8 +18,9 @@ class PersonController extends Controller
 {
     public function index()
     {
-        return Person::with('users.doctor')
-            ->whereHas('users', fn($query) => $query->whereIn('role', ['doctor', 'secretary']))->get();
+        return User::with(['person', 'doctor'])
+            ->whereIn('role', ['doctor', 'secretary'])
+            ->get();
     }
 
     public function store(Request $request)
@@ -35,9 +36,18 @@ class PersonController extends Controller
         ]);
 
         return DB::transaction(function () use ($validated, $request) {
+            // 1. Verificar rol único
+            $person = Person::where('ci', $validated['ci'])->first();
+            if ($person && $person->users()->where('role', $validated['role'])->exists()) {
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'role' => ['Esta persona ya tiene un usuario registrado con el rol seleccionado.'],
+                ]);
+            }
+
+            // 2. Procesar foto
             $photoPath = 'nophoto.webp';
             if ($request->hasFile('photo')) {
-                $photoPath = $request->file('photo')->store('photos', 'public');
+                $photoPath = $this->processAndStorePhoto($request->file('photo'));
             }
 
             $person = Person::firstOrCreate(
@@ -78,34 +88,78 @@ class PersonController extends Controller
             'phone_number' => 'required|string',
             'photo' => 'nullable|image|max:2048',
             'specialty' => 'nullable|string|max:255',
+            'role' => 'nullable|in:doctor,secretary',
+            'user_id' => 'required|exists:users,id', // Asegurar que recibimos el ID del usuario
         ]);
 
-        $data = [
-            'full_name' => $validated['full_name'],
-            'phone_number' => $validated['phone_number'],
-        ];
+        return DB::transaction(function () use ($request, $personnel, $validated) {
+            $user = $personnel->users()->findOrFail($validated['user_id']);
 
-        if ($request->hasFile('photo')) {
-            $data['photo'] = $request->file('photo')->store('photos', 'public');
-        }
+            // 1. Validar email único excluyendo al usuario actual
+            $request->validate([
+                'email' => 'required|email|unique:users,email,' . $user->id,
+            ]);
 
-        $personnel->update($data);
+            // 2. Verificar rol único excluyendo el usuario que se está editando
+            if (isset($validated['role'])) {
+                $roleExists = $personnel->users()
+                    ->where('role', $validated['role'])
+                    ->where('id', '!=', $user->id)
+                    ->exists();
 
-
-        foreach ($personnel->users as $user) {
-            if ($user && $user->role === 'doctor') {
-                $user->doctor()->updateOrCreate(
-                    ['user_id' => $user->id],
-                    ['specialty' => $validated['specialty'] ?? null]
-                );
-
-                break; // Assuming only one doctor per person, exit the loop after updating
+                if ($roleExists) {
+                    throw \Illuminate\Validation\ValidationException::withMessages([
+                        'role' => ['Esta persona ya tiene un usuario registrado con el rol seleccionado.'],
+                    ]);
+                }
             }
 
-        }
+            // 3. Lógica de email y verificación
+            if ($user->email !== $request->email) {
+                $user->email = $request->email;
+                $user->email_verified_at = null;
+                $user->save();
+                $user->sendEmailVerificationNotification();
+            }
 
+            $data = [
+                'full_name' => $validated['full_name'],
+                'phone_number' => $validated['phone_number'],
+            ];
 
-        return response()->json(['message' => 'Personal actualizado']);
+            if ($request->hasFile('photo')) {
+                // Eliminar foto anterior si no es la por defecto
+                if ($personnel->photo && $personnel->photo !== 'nophoto.webp') {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($personnel->photo);
+                }
+                $data['photo'] = $this->processAndStorePhoto($request->file('photo'));
+            }
+
+            $personnel->update($data);
+
+            if (isset($validated['specialty'])) {
+                if ($user->role === 'doctor') {
+                    $user->doctor()->updateOrCreate(
+                        ['user_id' => $user->id],
+                        ['specialty' => $validated['specialty']]
+                    );
+                }
+            }
+
+            return response()->json(['message' => 'Personal actualizado']);
+        });
+    }
+
+    private function processAndStorePhoto($file)
+    {
+        $image = imagecreatefromstring(file_get_contents($file->getRealPath()));
+        $filename = 'photos/' . Str::uuid() . '.webp';
+
+        // Convertir a WebP
+        imagewebp($image, storage_path('app/public/' . $filename), 80);
+        imagedestroy($image);
+
+        return $filename;
     }
 
     public function destroy(Person $personnel)

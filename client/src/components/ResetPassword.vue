@@ -25,6 +25,8 @@
      successMessage.value = '';
      try {
 
+      await axios.get('/sanctum/csrf-cookie');
+
 
        await axios.post('/api/reset-password', form.value);
        successMessage.value = 'Contraseña restablecida exitosamente. Redirigiendo al login...';

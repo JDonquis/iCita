@@ -5,13 +5,14 @@ import axios from 'axios';
 const personnel = ref([]);
 const loading = ref(false);
 const showModal = ref(false);
-const editingPerson = ref(null);
-const deletingPerson = ref(null);
+const editingUser = ref(null); // Ahora rastreamos el usuario
+const deletingUser = ref(null); // Ahora rastreamos el usuario
 const errors = ref({});
 const photoFile = ref(null);
 const photoPreview = ref(null);
 
 const form = ref({
+  id: null, // ID de la persona
   full_name: '',
   ci: '',
   phone_number: '',
@@ -34,32 +35,33 @@ const fetchPersonnel = async () => {
 };
 
 const openCreateModal = () => {
-  editingPerson.value = null;
-  form.value = { full_name: '', ci: '', phone_number: '', email: '', role: 'doctor', specialty: '' };
+  editingUser.value = null;
+  form.value = { id: null, full_name: '', ci: '', phone_number: '', email: '', role: 'doctor', specialty: '' };
   photoFile.value = null;
   photoPreview.value = null;
   errors.value = {};
   showModal.value = true;
 };
 
-const openEditModal = async (person) => {
-  editingPerson.value = person;
+const openEditModal = async (user) => {
+  editingUser.value = user;
   photoFile.value = null;
   photoPreview.value = null;
   errors.value = {};
 
-  const user = person.users?.[0];
+  // Mapeo crítico hacia formulario plano
   form.value = {
-    full_name: person.full_name,
-    ci: person.ci || '',
-    phone_number: person.phone_number || '',
-    email: user?.email || '',
-    role: user?.role || 'doctor',
-    specialty: user?.doctor?.specialty || '',
+    id: user.person.id,
+    full_name: user.person.full_name,
+    ci: user.person.ci || '',
+    phone_number: user.person.phone_number || '',
+    email: user.email || '',
+    role: user.role || 'doctor',
+    specialty: user.doctor?.specialty || '',
   };
 
-  if (person.photo && person.photo !== 'nophoto.webp') {
-    photoPreview.value = photoUrl(person.photo);
+  if (user.person.photo && user.person.photo !== 'nophoto.webp') {
+    photoPreview.value = photoUrl(user.person.photo);
   }
 
   showModal.value = true;
@@ -91,10 +93,15 @@ const save = async () => {
     if (form.value.role === 'doctor') {
       formData.append('specialty', form.value.specialty || '');
     }
+    
+    // Incluir ID de usuario para validación en backend
+    if (editingUser.value) {
+      formData.append('user_id', editingUser.value.id);
+    }
 
-    if (editingPerson.value) {
+    if (editingUser.value) {
       formData.append('_method', 'PUT');
-      await axios.post(`/api/personnel/${editingPerson.value.id}`, formData);
+      await axios.post(`/api/personnel/${form.value.id}`, formData);
     } else {
       await axios.post('/api/personnel', formData);
     }
@@ -109,19 +116,20 @@ const save = async () => {
   }
 };
 
-const confirmDelete = (person) => {
-  deletingPerson.value = person;
+const confirmDelete = (user) => {
+  deletingUser.value = user;
 };
 
 const cancelDelete = () => {
-  deletingPerson.value = null;
+  deletingUser.value = null;
 };
 
 const executeDelete = async () => {
-  if (!deletingPerson.value) return;
+  if (!deletingUser.value) return;
   try {
-    await axios.delete(`/api/personnel/${deletingPerson.value.id}`);
-    deletingPerson.value = null;
+    // Se sigue enviando el ID de la persona
+    await axios.delete(`/api/personnel/${deletingUser.value.person.id}`);
+    deletingUser.value = null;
     fetchPersonnel();
   } catch (e) {
     alert(e.response?.data?.message || 'Error al eliminar');
@@ -151,7 +159,7 @@ onMounted(fetchPersonnel);
     <!-- Modal Formulario -->
     <div v-if="showModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <div class="glass-panel w-full max-w-md p-8 rounded-xl animate-in fade-in zoom-in-95 duration-300">
-        <h2 class="font-headline-md text-headline-md text-primary mb-6">{{ editingPerson ? 'Editar' : 'Agregar' }} Personal</h2>
+        <h2 class="font-headline-md text-headline-md text-primary mb-6">{{ editingUser ? 'Editar' : 'Agregar' }} Personal</h2>
         <form @submit.prevent="save" class="space-y-5">
 
           <!-- Foto -->
@@ -231,7 +239,7 @@ onMounted(fetchPersonnel);
             </button>
             <button type="submit"
               class="px-5 py-2.5 bg-primary-container text-on-primary font-button text-button rounded-lg hover:bg-primary transition-all-custom shadow-sm active:scale-[0.98]">
-              {{ editingPerson ? 'Actualizar' : 'Guardar' }}
+              {{ editingUser ? 'Actualizar' : 'Guardar' }}
             </button>
           </div>
 
@@ -240,12 +248,12 @@ onMounted(fetchPersonnel);
     </div>
 
     <!-- Modal Confirmación Eliminar -->
-    <div v-if="deletingPerson" class="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+    <div v-if="deletingUser" class="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <div class="glass-panel w-full max-w-sm p-6 rounded-xl animate-in fade-in zoom-in-95 duration-200 text-center">
         <span class="material-symbols-outlined text-tertiary mb-3" style="font-size:48px">warning</span>
         <h3 class="font-headline-md text-headline-md text-on-surface mb-2">¿Eliminar personal?</h3>
         <p class="font-body-sm text-body-sm text-on-surface-variant mb-6">
-          Se eliminará permanentemente a <strong>{{ deletingPerson.full_name }}</strong> y todos sus datos asociados.
+          Se eliminará permanentemente a <strong>{{ deletingUser.person.full_name }}</strong> y todos sus datos asociados.
         </p>
         <div class="flex justify-center gap-3">
           <button @click="cancelDelete"
@@ -275,31 +283,40 @@ onMounted(fetchPersonnel);
           </tr>
         </thead>
         <tbody>
-          <tr v-for="person in personnel" :key="person.id"
+          <tr v-for="user in personnel" :key="user.id"
             class="border-b border-outline-variant/20 hover:bg-surface-container-lowest/50 transition-colors">
             <td class="p-4">
-              <img :src="photoUrl(person.photo)" alt="Foto"
+              <img :src="photoUrl(user.person.photo)" alt="Foto"
                 class="w-10 h-10 rounded-full object-cover border border-outline-variant/30" />
             </td>
-            <td class="p-4 text-body-lg text-on-surface">{{ person.full_name }}</td>
-            <td class="p-4 text-body-sm text-on-surface-variant">{{ person.users[0]?.email }}</td>
+            <td class="p-4 text-body-lg text-on-surface">{{ user.person.full_name }}</td>
+            <td class="p-4 text-body-sm text-on-surface-variant">
+              <div class="flex items-center gap-1">
+                {{ user.email }}
+                <span v-if="user.email_verified_at" title="Correo verificado" class="text-blue-500">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                  </svg>
+                </span>
+              </div>
+            </td>
             <td class="p-4 capitalize text-body-sm">
               <span class="inline-block px-3 py-1 rounded-full text-label-caps font-label-caps"
-                :class="person.users[0]?.role === 'doctor' ? 'bg-primary/10 text-primary' : 'bg-secondary/10 text-secondary'">
-                {{ person.users[0]?.role }}
+                :class="user.role === 'doctor' ? 'bg-primary/10 text-primary' : 'bg-secondary/10 text-secondary'">
+                {{ user.role }}
               </span>
             </td>
             <td class="p-4 text-body-sm text-on-surface-variant">
-              {{ person.users[0]?.doctor?.specialty || '—' }}
+              {{ user.doctor?.specialty || '—' }}
             </td>
-            <td class="p-4 text-body-sm text-on-surface-variant">{{ person.phone_number }}</td>
+            <td class="p-4 text-body-sm text-on-surface-variant">{{ user.person.phone_number }}</td>
             <td class="p-4">
               <div class="flex gap-2">
-                <button @click="openEditModal(person)"
+                <button @click="openEditModal(user)"
                   class="text-primary hover:text-primary-container font-button text-button transition-colors active:scale-[0.98]">
                   Editar
                 </button>
-                <button @click="confirmDelete(person)"
+                <button @click="confirmDelete(user)"
                   class="text-tertiary hover:text-tertiary-container font-button text-button transition-colors active:scale-[0.98]">
                   Eliminar
                 </button>
@@ -316,6 +333,7 @@ onMounted(fetchPersonnel);
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .glass-panel {
