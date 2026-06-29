@@ -5,6 +5,7 @@ import Login from '../components/Login.vue'
 import ForgotPassword from '../components/ForgotPassword.vue'
 import ResetPassword from '../components/ResetPassword.vue'
 import Dashboard from '../components/Dashboard.vue'
+import Dashboard from '../Pages/Dashboard.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,11 +16,6 @@ const router = createRouter({
     {
       path: '/dashboard',
       component: Dashboard,
-      meta: { requiresAuth: true }
-    },
-    { 
-      path: '/personnel', 
-      component: PersonnelList,
       meta: { requiresAuth: true }
     },
   ],
