@@ -39,8 +39,7 @@ import { useAuthStore } from '../stores/auth';
         <!-- Dashboard - Activo -->
         <router-link 
           to="/dashboard"
-          class="flex items-center gap-4 px-6 py-3 rounded-xl transition-all active:scale-95 text-primary font-bold bg-primary/10 border border-primary/20 shadow-sm" 
-        >
+          class="flex items-center gap-4 px-6 py-3 rounded-xl transition-all active:scale-95 text-primary font-bold bg-primary/10 border border-primary/20 shadow-sm"         >
           <span class="material-symbols-outlined">dashboard</span>
           <span class="text-base">Dashboard</span>
         </router-link>
@@ -50,10 +49,12 @@ import { useAuthStore } from '../stores/auth';
           <span class="text-base">Citas</span>
         </a>
         
-        <a class="flex items-center gap-4 px-6 py-3 rounded-xl transition-colors hover:bg-surface-variant/50 text-on-surface-variant hover:text-primary" href="#">
+        <router-link 
+          to="/personnel"
+          class="flex items-center gap-4 px-6 py-3 rounded-xl transition-colors hover:bg-surface-variant/50 text-on-surface-variant hover:text-primary"        >
           <span class="material-symbols-outlined">person</span>
           <span class="text-base">Personas</span>
-        </a>
+        </router-link>
         
         <a class="flex items-center gap-4 px-6 py-3 rounded-xl transition-colors hover:bg-surface-variant/50 text-on-surface-variant hover:text-primary" href="#">
           <span class="material-symbols-outlined">person</span>

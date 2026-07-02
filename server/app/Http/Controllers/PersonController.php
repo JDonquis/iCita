@@ -192,4 +192,17 @@ class PersonController extends Controller
             return response()->json(['message' => 'Error al eliminar el personal'], 500);
         }
     }
+
+    public function show(string $id)
+    {
+        $person = Person::findOrFail($id);
+        $user = User::with('doctor')->where('person_id', $person->id)->first();
+        return response()->json([
+            'person' => $person,
+            'user_id' => $user ? $user->id : null,
+            'email' => $user ? $user->email : null,
+            'role' => $user ? $user->role : null,
+            'doctor' => $user ? $user->doctor : null,
+        ]);
+    }
 }

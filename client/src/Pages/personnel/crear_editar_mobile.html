@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport" />
+    <title>iCita Medical - Registro de Personal</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Material Symbols -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Google Fonts: Manrope -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&amp;display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Theme Configuration -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#cf3c3c",
+                        "surface-tint": "#00629e",
+                        "secondary-container": "#58cafe",
+                        "tertiary-fixed-dim": "#ffb3ae",
+                        "on-primary-container": "#f7f9ff",
+                        "outline": "#707882",
+                        "surface-bright": "#f7f9fb",
+                        "surface-dim": "#d8dadc",
+                        "surface": "#f7f9fb",
+                        "on-secondary-fixed": "#001e2b",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#f2f4f6",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-primary-fixed-variant": "#004a78",
+                        "error": "#ba1a1a",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#e0e3e5",
+                        "secondary-fixed-dim": "#75d1ff",
+                        "on-surface": "#191c1e",
+                        "on-tertiary-fixed": "#410004",
+                        "on-tertiary-fixed-variant": "#910816",
+                        "on-tertiary-container": "#fff7f6",
+                        "primary-fixed": "#cfe5ff",
+                        "outline-variant": "#c0c7d2",
+                        "primary": "#005e96",
+                        "error-container": "#ffdad6",
+                        "on-background": "#191c1e",
+                        "primary-container": "#0277bd",
+                        "on-secondary-fixed-variant": "#004d67",
+                        "inverse-primary": "#99cbff",
+                        "surface-container": "#eceef0",
+                        "secondary-fixed": "#c2e8ff",
+                        "background": "#f7f9fb",
+                        "tertiary": "#ac2226",
+                        "surface-container-highest": "#e0e3e5",
+                        "on-secondary-container": "#005370",
+                        "on-error": "#ffffff",
+                        "secondary": "#006688",
+                        "primary-fixed-dim": "#99cbff",
+                        "surface-container-high": "#e6e8ea",
+                        "inverse-surface": "#2d3133",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#ffdad7",
+                        "on-surface-variant": "#404751",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#001d34"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "24px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "sm": "8px",
+                        "gutter-mobile": "12px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "base": "4px",
+                        "lg": "24px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "button": ["Manrope"],
+                        "label-caps": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "headline-lg": ["Manrope"],
+                        "body-sm": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "headline-lg-mobile": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "button": ["16px", { "lineHeight": "20px", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(88, 202, 254, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 94, 150, 0.1);
+        }
+
+        .safe-bottom {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        body {
+            background-color: #f7f9fb;
+            font-family: 'Manrope', sans-serif;
+            overflow-x: hidden;
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col items-center justify-start">
+    <!-- Background Decoration (Atmospheric) -->
+    <div class="fixed inset-0 z-[-1] overflow-hidden">
+        <div
+            class="absolute -top-[10%] -left-[10%] w-[60%] h-[60%] rounded-full bg-secondary-container/10 blur-[120px]">
+        </div>
+        <div class="absolute top-[40%] -right-[5%] w-[50%] h-[50%] rounded-full bg-primary/5 blur-[100px]"></div>
+    </div>
+    <!-- Main Canvas -->
+    <main class="w-full max-w-md px-margin-mobile py-lg min-h-screen flex flex-col gap-lg">
+        <!-- Header Section -->
+        <header class="flex items-center justify-between w-full">
+            <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary tracking-tight">Agregar Personal
+            </h1>
+            <button
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-highest/50 text-on-surface-variant hover:bg-surface-container-highest transition-colors active:scale-95">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </header>
+        <!-- Glassmorphism Form Container -->
+        <section
+            class="glass-panel rounded-2xl p-lg flex flex-col gap-lg animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <!-- Profile Photo Section -->
+            <div class="flex flex-col items-center gap-md">
+                <div class="relative group">
+                    <div
+                        class="w-32 h-32 rounded-full border-4 border-white shadow-md bg-surface-container-high flex items-center justify-center overflow-hidden">
+                        <!-- Placeholder Silhouette -->
+                        <span class="material-symbols-outlined text-outline-variant scale-[4.0]"
+                            style="font-variation-settings: 'FILL' 1;">person</span>
+                        <!-- Hidden Img for prompt context -->
+                        <img class="absolute inset-0 w-full h-full object-cover opacity-0"
+                            data-alt="A clean, minimalist medical professional silhouette avatar, softly lit, set against a sterile white background. The visual style is modern, clinical, and high-quality, mirroring a sophisticated healthcare app interface with light blue accents and professional lighting."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk6UxX25U9HwdxHNrZ-6XerOiE22y9-06sKhupc2u9-xwVj422HMT2zjGGRVLdniw2UjTTESirR55rNyBBZj3MrVz2QNi-Zo1EXvlwA8Kga6l7M8b-BOpCnkzAlET4j9vtxXq17kQkoaCdnPCpFR7VZUQmaCOcac8pLtIn73MH-uxhjbNtHV3uiY-L0N26TALoZJhgwcbkJFEIQs6S1EoQ_QCRFPgO98vtjLngAZBmnMlLCIGcWcj0LS1rZE1rt4nQYiyylo0fezc" />
+                    </div>
+                    <div
+                        class="absolute inset-0 rounded-full bg-primary/5 group-hover:bg-transparent transition-colors pointer-events-none">
+                    </div>
+                </div>
+                <button
+                    class="font-button text-button text-primary hover:text-primary-fixed-dim transition-colors flex items-center gap-xs">
+                    <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+                    Cambiar Foto
+                </button>
+            </div>
+            <!-- Input Fields -->
+            <div class="flex flex-col gap-md">
+                <!-- Nombre Completo -->
+                <div class="flex flex-col gap-xs">
+                    <label class="font-label-caps text-label-caps text-on-surface-variant px-xs">Nombre Completo</label>
+                    <div class="relative group">
+                        <span
+                            class="absolute left-md top-1/2 -translate-y-1/2 material-symbols-outlined text-outline group-focus-within:text-primary transition-colors">person</span>
+                        <input
+                            class="w-full pl-[48px] pr-md py-md bg-white/40 border border-outline-variant/30 rounded-xl font-body-lg text-body-lg focus:ring-2 focus:ring-secondary-container focus:border-transparent outline-none transition-all placeholder:text-outline-variant"
+                            placeholder="Ej. Dr. Alejandro Ríos" type="text" />
+                    </div>
+                </div>
+                <!-- Rol (Dropdown) -->
+                <div class="flex flex-col gap-xs">
+                    <label class="font-label-caps text-label-caps text-on-surface-variant px-xs">Rol</label>
+                    <div class="relative">
+                        <span
+                            class="absolute left-md top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">clinical_notes</span>
+                        <select
+                            class="w-full pl-[48px] pr-md py-md bg-white/40 border border-outline-variant/30 rounded-xl font-body-lg text-body-lg focus:ring-2 focus:ring-secondary-container focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
+                            <option disabled="" selected="" value="">Selecciona un rol</option>
+                            <option value="doctor">Doctor</option>
+                            <option value="secretaria">Secretaria</option>
+                        </select>
+                        <span
+                            class="absolute right-md top-1/2 -translate-y-1/2 material-symbols-outlined text-outline pointer-events-none">expand_more</span>
+                    </div>
+                </div>
+                <!-- CI -->
+                <div class="flex flex-col gap-xs">
+                    <label class="font-label-caps text-label-caps text-on-surface-variant px-xs">Cédula de Identidad
+                        (CI)</label>
+                    <div class="relative group">
+                        <span
+                            class="absolute left-md top-1/2 -translate-y-1/2 material-symbols-outlined text-outline group-focus-within:text-primary transition-colors">badge</span>
+                        <input
+                            class="w-full pl-[48px] pr-md py-md bg-white/40 border border-outline-variant/30 rounded-xl font-body-lg text-body-lg focus:ring-2 focus:ring-secondary-container focus:border-transparent outline-none transition-all placeholder:text-outline-variant"
+                            placeholder="12.345.678-9" type="number" />
+                    </div>
+                </div>
+                <!-- Teléfono -->
+                <div class="flex flex-col gap-xs">
+                    <label class="font-label-caps text-label-caps text-on-surface-variant px-xs">Teléfono</label>
+                    <div class="relative group">
+                        <span
+                            class="absolute left-md top-1/2 -translate-y-1/2 material-symbols-outlined text-outline group-focus-within:text-primary transition-colors">call</span>
+                        <input
+                            class="w-full pl-[48px] pr-md py-md bg-white/40 border border-outline-variant/30 rounded-xl font-body-lg text-body-lg focus:ring-2 focus:ring-secondary-container focus:border-transparent outline-none transition-all placeholder:text-outline-variant"
+                            placeholder="+56 9 1234 5678" type="tel" />
+                    </div>
+                </div>
+                <!-- Correo Electrónico -->
+                <div class="flex flex-col gap-xs">
+                    <label class="font-label-caps text-label-caps text-on-surface-variant px-xs">Correo
+                        Electrónico</label>
+                    <div class="relative group">
+                        <span
+                            class="absolute left-md top-1/2 -translate-y-1/2 material-symbols-outlined text-outline group-focus-within:text-primary transition-colors">mail</span>
+                        <input
+                            class="w-full pl-[48px] pr-md py-md bg-white/40 border border-outline-variant/30 rounded-xl font-body-lg text-body-lg focus:ring-2 focus:ring-secondary-container focus:border-transparent outline-none transition-all placeholder:text-outline-variant"
+                            placeholder="doctor@icita.com" type="email" />
+                    </div>
+                </div>
+            </div>
+            <!-- Actions Footer -->
+            <div class="flex flex-col gap-sm pt-md mt-sm">
+                <button
+                    class="w-full py-md px-lg bg-primary-container text-on-primary-container font-button text-button rounded-xl shadow-lg shadow-primary/20 active:scale-95 transition-all flex items-center justify-center gap-sm">
+                    Guardar Personal
+                </button>
+                <button
+                    class="w-full py-md px-lg bg-transparent border border-outline-variant/50 text-on-surface-variant font-button text-button rounded-xl active:scale-95 hover:bg-surface-container-low transition-all">
+                    Cancelar
+                </button>
+            </div>
+        </section>
+        <!-- Informative Note -->
+        <p class="text-center font-body-sm text-body-sm text-outline-variant max-w-[80%] mx-auto">
+            El personal registrado tendrá acceso a sus funciones específicas según el rol asignado.
+        </p>
+    </main>
+    <!-- Bottom Navigation Mockup (Suppressed for transactional screen logic but kept for shell context if needed) -->
+    <!-- Note: This page is transactional, so full nav is suppressed as per guidelines. -->
+    <script>
+        // Simple Interaction logic
+        document.querySelectorAll('input, select').forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.classList.add('shadow-[0_0_15px_rgba(88,202,254,0.15)]');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.classList.remove('shadow-[0_0_15px_rgba(88,202,254,0.15)]');
+            });
+        });
+
+        // Save Button Interaction
+        const saveBtn = document.querySelector('button.bg-primary-container');
+        saveBtn.addEventListener('click', () => {
+            saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Guardando...';
+            setTimeout(() => {
+                saveBtn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Personal Guardado';
+                saveBtn.classList.replace('bg-primary-container', 'bg-secondary');
+            }, 1500);
+        });
+    </script>
+</body>
+
+</html>
